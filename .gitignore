@@ -1,3 +1,13 @@
+# Configuration files with sensitive data
+config.py
+
+# Log files
+*.log
+
+# output files
+*.out
+images/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

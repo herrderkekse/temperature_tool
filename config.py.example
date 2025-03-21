@@ -1,0 +1,6 @@
+# SSH Configuration
+SSH_HOST = "your-host"
+SSH_USER = "your-username"
+SSH_KEY_PATH = "/path/to/your/ssh/key"
+REMOTE_FILE_PATH = "/path/to/remote/temperature.log"
+LOCAL_FILE_PATH = "cpu_temp.log"
