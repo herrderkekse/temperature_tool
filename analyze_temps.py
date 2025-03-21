@@ -5,28 +5,23 @@ import numpy as np
 import paramiko
 from datetime import datetime
 from scipy.optimize import curve_fit
-from config import SSH_HOST, SSH_USER, SSH_KEY_PATH, REMOTE_FILE_PATH, LOCAL_FILE_PATH
+from config import SSH_HOST, SSH_USER, SSH_KEY_PATH, REMOTE_FILE_PATH
 
 
-# Fetch the log file over SSH using key authentication
-def fetch_log_via_ssh():
+# Read the remote file directly
+def read_remote_file():
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     ssh.connect(SSH_HOST, username=SSH_USER, key_filename=SSH_KEY_PATH)
 
     sftp = ssh.open_sftp()
-    sftp.get(REMOTE_FILE_PATH, LOCAL_FILE_PATH)
+    with sftp.open(REMOTE_FILE_PATH, 'r') as remote_file:
+        # Read directly into pandas
+        df = pd.read_csv(remote_file, skiprows=1,
+                         names=["Datetime", "CPU_Temp"])
+
     sftp.close()
     ssh.close()
-    print("File downloaded successfully.")
-
-
-# Load the data
-def load_log(file_path):
-    df = pd.read_csv(file_path, skiprows=1, names=["Datetime", "CPU_Temp"])
-    df["Datetime"] = pd.to_datetime(df["Datetime"])  # Convert to datetime
-    df["CPU_Temp"] = df["CPU_Temp"].str.extract(
-        r'([\d\.]+)').astype(float)  # Extract numeric values
     return df
 
 
@@ -117,8 +112,10 @@ def plot_data(df, trendline=True, save_plot=True):
 
 # Main function
 def main():
-    fetch_log_via_ssh()
-    df = load_log(LOCAL_FILE_PATH)
+    df = read_remote_file()
+    df["Datetime"] = pd.to_datetime(df["Datetime"])  # Convert to datetime
+    df["CPU_Temp"] = df["CPU_Temp"].str.extract(
+        r'([\d\.]+)').astype(float)  # Extract numeric values
     analyze_data(df)
     plot_data(df)
 
