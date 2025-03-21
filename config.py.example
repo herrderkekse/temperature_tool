@@ -6,3 +6,7 @@ REMOTE_FILE_PATH = "/path/to/remote/temperature.log"
 
 # Analysis Configuration
 SAVE_PLOT = True  # Whether to save the temperature plot to disk
+
+# Time Frame Configuration (optional)
+START_TIME = None  # Format: "YYYY-MM-DD HH:MM:SS" or None for all data
+END_TIME = None    # Format: "YYYY-MM-DD HH:MM:SS" or None for all data

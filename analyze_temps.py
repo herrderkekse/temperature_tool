@@ -7,7 +7,7 @@ from datetime import datetime
 from scipy.optimize import curve_fit
 from config import (
     SSH_HOST, SSH_USER, SSH_KEY_PATH, REMOTE_FILE_PATH,
-    SAVE_PLOT
+    SAVE_PLOT, START_TIME, END_TIME
 )
 
 
@@ -113,12 +113,32 @@ def plot_data(df, trendline=True):
     plt.show()
 
 
+def filter_timeframe(df):
+    """Filter dataframe based on configured time frame"""
+    filtered_df = df.copy()
+
+    if START_TIME:
+        filtered_df = filtered_df[filtered_df["Datetime"] >= START_TIME]
+    if END_TIME:
+        filtered_df = filtered_df[filtered_df["Datetime"] <= END_TIME]
+
+    return filtered_df
+
+
 # Main function
 def main():
     df = read_remote_file()
     df["Datetime"] = pd.to_datetime(df["Datetime"])  # Convert to datetime
     df["CPU_Temp"] = df["CPU_Temp"].str.extract(
         r'([\d\.]+)').astype(float)  # Extract numeric values
+
+    # Apply time frame filtering
+    df = filter_timeframe(df)
+
+    if len(df) == 0:
+        print("No data points found in the specified time frame")
+        return
+
     analyze_data(df)
     plot_data(df)
 
