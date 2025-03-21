@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 import paramiko
 import logging
-from datetime import datetime
 from scipy.optimize import curve_fit
 from config import (
     SSH_HOST, SSH_USER, SSH_KEY_PATH, REMOTE_FILE_PATH,

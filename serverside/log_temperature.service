@@ -1,0 +1,13 @@
+[Unit]
+Description=Temperature Logging Service
+After=multi-user.target
+
+[Service]
+ExecStart=/usr/local/bin/log_temperature.sh
+Restart=always
+User=root
+StandardOutput=append:/var/log/temperature.log
+StandardError=append:/var/log/temperature_error.log
+
+[Install]
+WantedBy=multi-user.target
