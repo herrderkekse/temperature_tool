@@ -86,6 +86,7 @@ def fit_trend(df):
         )
 
         logger.debug(f"Exponential fit parameters: {popt}")
+        logger.info(f"Estimated thermal equalibrium: {popt[0]:.2f}°C")
 
         def trend(x):
             return exp_approach(x, *popt)
