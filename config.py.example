@@ -3,3 +3,6 @@ SSH_HOST = "your-host"
 SSH_USER = "your-username"
 SSH_KEY_PATH = "/path/to/your/ssh/key"
 REMOTE_FILE_PATH = "/path/to/remote/temperature.log"
+
+# Analysis Configuration
+SAVE_PLOT = True  # Whether to save the temperature plot to disk

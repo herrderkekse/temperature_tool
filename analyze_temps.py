@@ -5,7 +5,10 @@ import numpy as np
 import paramiko
 from datetime import datetime
 from scipy.optimize import curve_fit
-from config import SSH_HOST, SSH_USER, SSH_KEY_PATH, REMOTE_FILE_PATH
+from config import (
+    SSH_HOST, SSH_USER, SSH_KEY_PATH, REMOTE_FILE_PATH,
+    SAVE_PLOT
+)
 
 
 # Read the remote file directly
@@ -81,7 +84,7 @@ def fit_trend(df):
 
 
 # Plot data
-def plot_data(df, trendline=True, save_plot=True):
+def plot_data(df, trendline=True):
     plt.figure(figsize=(10, 5))
     plt.plot(df["Datetime"], df["CPU_Temp"],
              label="CPU Temperature", marker='o', linestyle='-')
@@ -98,7 +101,7 @@ def plot_data(df, trendline=True, save_plot=True):
     plt.grid()
     plt.xticks(rotation=45)
 
-    if save_plot:
+    if SAVE_PLOT:
         # Create images directory if it doesn't exist
         import os
         os.makedirs('./images', exist_ok=True)
